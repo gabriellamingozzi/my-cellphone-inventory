@@ -1,5 +1,5 @@
 import React from "react"
-import { TextField, Stack, Typography} from "@mui/material"
+import { TextField, Stack, Typography, Box, Paper, type SelectChangeEvent } from "@mui/material"
 import MultipleSelectChip from "./multipleSelectChip"
 
 const colors = [
@@ -17,32 +17,44 @@ const storage = [
     '1 TB',
 ];
 
+interface Props {
+    handleBrandChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    handleModelChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    handleMinPriceChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    handleMaxPriceChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    handleMultiSelectChange: (event: SelectChangeEvent<string[]>, type: "storage" | "color") => void;
+}
 
 
-export default function Filters() {
+export default function Filters(props: Props) {
+
+   
 
     return (
-        <>
 
-            <Stack justifyContent="space-between" alignItems="center"  direction="row">
+        <Box p={2} mb={2}>
+
+            <Stack justifyContent="space-between" alignItems="center" direction="row">
                 <Typography>Filter by:</Typography>
                 {/* brand */}
-                <TextField id="brand" label="Brand" variant="outlined" />
+                <TextField id="brand" label="Brand" variant="outlined" onChange={(value: React.ChangeEvent<HTMLInputElement>) => props.handleBrandChange(value)} />
 
                 {/* model */}
-                <TextField id="model" label="Model" variant="outlined" />
+                <TextField id="model" label="Model" variant="outlined" onChange={(value: React.ChangeEvent<HTMLInputElement>) => props.handleModelChange(value)} />
 
                 {/* storage*/}
-                <MultipleSelectChip label="Storage" options={storage} />
+                <MultipleSelectChip onChange={props.handleMultiSelectChange} label="Storage" options={storage} />
 
 
                 {/* colors */}
-                <MultipleSelectChip label="Color" options={colors} />
+                <MultipleSelectChip onChange={props.handleMultiSelectChange}  label="Color" options={colors} />
 
                 {/* price range */}
-                <TextField id="min" label="Min Price" variant="outlined" />
-                <TextField id="max" label="Max Price" variant="outlined" />
+                <TextField id="min" label="Min Price" variant="outlined" onChange={(value: React.ChangeEvent<HTMLInputElement>) => props.handleMinPriceChange(value)} />
+                <TextField id="max" label="Max Price" variant="outlined" onChange={(value: React.ChangeEvent<HTMLInputElement>) => props.handleMaxPriceChange(value)} />
             </Stack>
-        </>
+
+        </Box>
+
     )
 }

@@ -3,8 +3,7 @@ import Inventory from "../src/pages/inventory/inventory"
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "My Cellphone Store" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "My Cellphone Store" }
   ];
 }
 

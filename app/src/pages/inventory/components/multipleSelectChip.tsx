@@ -30,56 +30,54 @@ function getStyles(name: string, personName: readonly string[], theme: Theme) {
 }
 
 
-interface Props{
-    label: string;
-    options: string[]
+interface Props {
+  label: string;
+  options: string[];
+  onChange: (event: SelectChangeEvent<string[]>, type: "storage" | "color") => void;
 }
 
 export default function MultipleSelectChip(props: Props) {
   const theme = useTheme();
-  const [personName, setPersonName] = React.useState<string[]>([]);
+  const [selected, setSelected] = React.useState<string[]>([]);
 
-  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
+  const handleChange = (event: SelectChangeEvent<typeof selected>) => {
     const {
       target: { value },
     } = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
+    const newValue = typeof value === 'string' ? value.split(',') : value;
+    setSelected(newValue);
+    props.onChange(event, props.label === "Storage" ? 'storage': 'color'); // <-- trigger parent's change handler
   };
 
   return (
-    <div>
-      <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="multiple-chip-label">{props.label}</InputLabel>
-        <Select
-          labelId="multiple-chip-label"
-          id="multiple-chip"
-          multiple
-          value={personName}
-          onChange={handleChange}
-          input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-          renderValue={(selected) => (
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-              {selected.map((value) => (
-                <Chip key={value} label={value} />
-              ))}
-            </Box>
-          )}
-          MenuProps={MenuProps}
-        >
-          {props.options.map((name) => (
-            <MenuItem
-              key={name}
-              value={name}
-              style={getStyles(name, personName, theme)}
-            >
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </div>
+    <FormControl sx={{ m: 1, width: 300 }}>
+      <InputLabel id="multiple-chip-label">{props.label}</InputLabel>
+      <Select
+        labelId="multiple-chip-label"
+        id="multiple-chip"
+        multiple
+        value={selected}
+        onChange={handleChange}
+        input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+        renderValue={(selected) => (
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+            {selected.map((value) => (
+              <Chip key={value} label={value} />
+            ))}
+          </Box>
+        )}
+        MenuProps={MenuProps}
+      >
+        {props.options.map((name) => (
+          <MenuItem
+            key={name}
+            value={name}
+            style={getStyles(name, selected, theme)}
+          >
+            {name}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 }
