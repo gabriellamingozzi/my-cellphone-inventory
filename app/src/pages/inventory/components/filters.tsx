@@ -20,9 +20,10 @@ const storage = [
 interface Props {
     handleBrandChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     handleModelChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    handleColorChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     handleMinPriceChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     handleMaxPriceChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    handleMultiSelectChange: (event: SelectChangeEvent<string[]>, type: "storage" | "color") => void;
+    handleMultiSelectChange: (event: SelectChangeEvent<string[]>, type: "storage" ) => void;
 }
 
 
@@ -46,8 +47,10 @@ export default function Filters(props: Props) {
                 <MultipleSelectChip onChange={props.handleMultiSelectChange} label="Storage" options={storage} />
 
 
-                {/* colors */}
-                <MultipleSelectChip onChange={props.handleMultiSelectChange}  label="Color" options={colors} />
+                {/* colors
+                <MultipleSelectChip onChange={props.handleMultiSelectChange}  label="Color" options={colors} /> */}
+
+                <TextField id="color" label="Color" variant="outlined" onChange={(value: React.ChangeEvent<HTMLInputElement>) => props.handleColorChange(value)} />
 
                 {/* price range */}
                 <TextField id="min" label="Min Price" variant="outlined" onChange={(value: React.ChangeEvent<HTMLInputElement>) => props.handleMinPriceChange(value)} />
