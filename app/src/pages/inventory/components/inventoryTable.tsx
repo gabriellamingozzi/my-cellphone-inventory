@@ -1,32 +1,53 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import TableSortLabel from '@mui/material/TableSortLabel';
 import Paper from '@mui/material/Paper';
 import type Cellphone from '~/src/types/cellphone';
+import { useSortableTable } from "../../../hooks/useSortableTable";
 
-interface Props{
-    inventoryArray: Cellphone[]
+interface Props {
+  inventoryArray: Cellphone[]
 }
 
 export default function InventoryTable(props: Props) {
+  const [sortField, setSortField] = useState("");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [tableData, handleSorting] = useSortableTable(props.inventoryArray);
+
+  const columnHeaders = ['brand', 'model', 'storage', 'color', 'price']
+
+  const handleSort = (field: string) => {
+    const order = field === sortField && sortOrder === "asc" ? "desc" : "asc";
+    setSortField(field);
+    setSortOrder(order);
+    handleSorting(field, order);
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Brand</TableCell>
-            <TableCell>Model</TableCell>
-            <TableCell>Storage</TableCell>
-            <TableCell>Color</TableCell>
-            <TableCell>Price</TableCell>
+             {columnHeaders.map((field) => (
+              <TableCell key={field}>
+                <TableSortLabel
+                  active={sortField === field}
+                  direction={sortField === field ? sortOrder : "asc"}
+                  onClick={() => handleSort(field)}
+                >
+                  {field.toUpperCase()}
+                </TableSortLabel>
+              </TableCell>
+            ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.inventoryArray.map((cellphone, index) => (
+          {tableData.map((cellphone: Cellphone, index: number) => (
             <TableRow
               key={index}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -35,7 +56,7 @@ export default function InventoryTable(props: Props) {
               <TableCell>{cellphone.model}</TableCell>
               <TableCell>{cellphone.storage}</TableCell>
               <TableCell>{cellphone.color}</TableCell>
-              <TableCell>{cellphone.price.toLocaleString('en-US', {style: 'currency',currency: 'USD'})}</TableCell>
+              <TableCell>{cellphone.price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</TableCell>
             </TableRow>
           ))}
         </TableBody>

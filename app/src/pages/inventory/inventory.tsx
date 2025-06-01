@@ -148,6 +148,8 @@ export default function Inventory() {
     const [minPrice, setMinPrice] = useDebounceValue('', 500);
     const [maxPrice, setMaxPrice] = useDebounceValue('', 500);
 
+    const [sortValues, setSortValues] = useState<string[]>([]);
+
     const [inventoryList, setInventoryList] = useState<Cellphone[]>(phonesInInventory);
 
     const handleBrandChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -185,70 +187,65 @@ export default function Inventory() {
     }
 
 
-    // const handleSort = (sortVal: string) => {
 
-    //     //       people.sort((a, b) => a.age - b.age); // Sort by age ascending
-    //     //  people.sort((a, b) => b.name.localeCompare(a.name)); // Sort by name descending
 
-    // }
+const handleFilterChange = () => {
+    let filtered = phonesInInventory.filter((cellphone) => {
+        // Check brand
+        if (brand && brand.length > 0 && !cellphone.brand.toLowerCase().includes(brand.toLowerCase())) {
+            return false;
+        }
 
-    const handleFilterChange = () => {
-        let filtered = phonesInInventory.filter((cellphone) => {
-            // Check brand
-            if (brand && brand.length > 0 && !cellphone.brand.toLowerCase().includes(brand.toLowerCase())) {
-                return false;
-            }
+        // Check model
+        if (model && model.length > 0 && !cellphone.model.toLowerCase().includes(model.toLowerCase())) {
+            return false;
+        }
 
-            // Check model
-            if (model && model.length > 0 && !cellphone.model.toLowerCase().includes(model.toLowerCase())) {
-                return false;
-            }
+        // Check storage
+        if (storage.length > 0 && !storage.includes(cellphone.storage)) {
+            return false;
+        }
 
-            // Check storage
-            if (storage.length > 0 && !storage.includes(cellphone.storage)) {
-                return false;
-            }
+        // Check color
+        if (color && color.length > 0 && !cellphone.color.toLowerCase().includes(color.toLowerCase())) {
+            return false;
+        }
 
-            // Check color
-            if (color && color.length > 0 && !cellphone.color.toLowerCase().includes(color.toLowerCase())) {
-                return false;
-            }
+        // Check price range
+        if (minPrice && cellphone.price < Number(minPrice)) {
+            return false;
+        }
+        if (maxPrice && cellphone.price > Number(maxPrice)) {
+            return false;
+        }
 
-            // Check price range
-            if (minPrice && cellphone.price < Number(minPrice)) {
-                return false;
-            }
-            if (maxPrice && cellphone.price > Number(maxPrice)) {
-                return false;
-            }
+        return true; // Include this phone if all checks pass
+    });
 
-            return true; // Include this phone if all checks pass
-        });
+    setInventoryList(filtered);
+};
 
-        setInventoryList(filtered);
-    };
+useEffect(() => {
+    handleFilterChange();
+}, [brand, model, storage, color, minPrice, maxPrice]);
 
-    useEffect(() => {
-        handleFilterChange();
-    }, [brand, model, storage, color, minPrice, maxPrice]);
+return (
 
-    return (
+    <>
+        <Typography variant="h1" gutterBottom>
+            Inventory
+        </Typography>
+        <Filters
+            handleMaxPriceChange={handleMaxPriceChange}
+            handleMinPriceChange={handleMinPriceChange}
+            handleModelChange={handleModelChange}
+            handleColorChange={handleColorChange}
+            handleMultiSelectChange={handleMultiSelectChange}
+            handleBrandChange={handleBrandChange} />
+        <InventoryTable inventoryArray={inventoryList} />
+    </>
 
-        <>
-            <Typography variant="h1" gutterBottom>
-                Inventory
-            </Typography>
-            <Filters
-                handleMaxPriceChange={handleMaxPriceChange}
-                handleMinPriceChange={handleMinPriceChange}
-                handleModelChange={handleModelChange}
-                handleColorChange={handleColorChange}
-                handleMultiSelectChange={handleMultiSelectChange}
-                handleBrandChange={handleBrandChange} />
-            <InventoryTable inventoryArray={inventoryList} />
-        </>
-
-    );
+);
 
 
 }
