@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { Box, Drawer, Typography, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Button, Box, Drawer, Typography, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
@@ -8,6 +8,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import FolderIcon from '@mui/icons-material/Folder';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 
 const drawerWidth = 240;
 
@@ -47,6 +51,14 @@ export default function Navbar() {
                                 <ListItemText primary={'Dashboard'} />
                             </ListItemButton>
                         </ListItem>
+                          <ListItem key={'Files'} disablePadding>
+                            <ListItemButton>
+                                <ListItemIcon>
+                                    <FolderIcon />
+                                </ListItemIcon>
+                                <ListItemText primary={'Files'} />
+                            </ListItemButton>
+                        </ListItem>
                         <ListItem key={'Inventory'} disablePadding>
                             <ListItemButton selected={true}>
                                 <ListItemIcon>
@@ -55,21 +67,30 @@ export default function Navbar() {
                                 <ListItemText primary={'Inventory'} />
                             </ListItemButton>
                         </ListItem>
+                        <ListItem key={'Orders'} disablePadding>
+                            <ListItemButton>
+                                <ListItemIcon>
+                                    <ShoppingCartIcon />
+                                </ListItemIcon>
+                                <ListItemText primary={'Orders'} />
+                            </ListItemButton>
+                        </ListItem>
+                         <ListItem key={'Transactions'} disablePadding>
+                            <ListItemButton>
+                                <ListItemIcon>
+                                    <ReceiptIcon />
+                                </ListItemIcon>
+                                <ListItemText primary={'Transactions'} />
+                            </ListItemButton>
+                        </ListItem>
+                    </List>
+                   
+                    <Box component={Button} fullWidth sx={{position: "absolute", bottom: "0", color: 'white' }}>
+                        <AccountCircleIcon />
+                        <Typography sx={{marginLeft: 1}}>Account</Typography>
+                    </Box>
 
-                    </List>
-                    <Divider />
-                    <List>
-                        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                            <ListItem key={text} disablePadding>
-                                <ListItemButton>
-                                    <ListItemIcon>
-                                        {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                                    </ListItemIcon>
-                                    <ListItemText primary={text} />
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
-                    </List>
+                    
                 </Drawer>
             </Box>
         </ThemeProvider>
