@@ -33,7 +33,7 @@ function getStyles(name: string, personName: readonly string[], theme: Theme) {
 interface Props {
   label: string;
   options: string[];
-  onChange: (event: SelectChangeEvent<string[]>, type: "storage" ) => void;
+  onChange: (event: SelectChangeEvent<string[]>, type: "storage" | "color" ) => void;
 }
 
 export default function MultipleSelectChip(props: Props) {
@@ -46,7 +46,7 @@ export default function MultipleSelectChip(props: Props) {
     } = event;
     const newValue = typeof value === 'string' ? value.split(',') : value;
     setSelected(newValue);
-    props.onChange(event, 'storage'); // <-- trigger parent's change handler
+     props.onChange(event, props.label === "Storage" ? 'storage': 'color');// <-- trigger parent's change handler
   };
 
   return (
