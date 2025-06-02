@@ -9,6 +9,7 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Paper from '@mui/material/Paper';
 import type Cellphone from '~/src/types/cellphone';
 import { useSortableTable } from "../../../hooks/useSortableTable";
+import { styled } from '@mui/material/styles';
 
 interface Props {
   inventoryArray: Cellphone[]
@@ -28,12 +29,28 @@ export default function InventoryTable(props: Props) {
     handleSorting(field, order);
   };
 
+
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover, // A very light grey from MUI's palette
+    },
+    // Hide last border for all the cells
+    '&:last-child td, &:last-child th': {
+      border: 0,
+    },
+    '&:hover': {
+      backgroundColor: theme.palette.action.selected, // A slightly darker hover color
+      cursor: 'pointer', // Indicates interactivity
+    },
+  }));
+
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-             {columnHeaders.map((field) => (
+            {columnHeaders.map((field) => (
               <TableCell key={field}>
                 <TableSortLabel
                   active={sortField === field}
@@ -48,7 +65,8 @@ export default function InventoryTable(props: Props) {
         </TableHead>
         <TableBody>
           {tableData.map((cellphone: Cellphone, index: number) => (
-            <TableRow
+
+            <StyledTableRow
               key={index}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
@@ -57,7 +75,7 @@ export default function InventoryTable(props: Props) {
               <TableCell>{cellphone.storage}</TableCell>
               <TableCell>{cellphone.color}</TableCell>
               <TableCell>{cellphone.price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</TableCell>
-            </TableRow>
+            </StyledTableRow>
           ))}
         </TableBody>
       </Table>

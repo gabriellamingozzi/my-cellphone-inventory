@@ -148,7 +148,11 @@ export default function Inventory() {
     const [minPrice, setMinPrice] = useDebounceValue('', 500);
     const [maxPrice, setMaxPrice] = useDebounceValue('', 500);
 
-    const [sortValues, setSortValues] = useState<string[]>([]);
+    const [minPriceError, minPriceSetError] = useState(false);
+    const [minPriceHelperText, minPriceSetHelperText] = useState('');
+
+    const [maxPriceError, maxPriceSetError] = useState(false);
+    const [maxPriceHelperText, maxPriceSetHelperText] = useState('');
 
     const [inventoryList, setInventoryList] = useState<Cellphone[]>(phonesInInventory);
 
@@ -164,10 +168,24 @@ export default function Inventory() {
 
     const handleMinPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setMinPrice(event.target.value)
+        if (isNaN(Number(event.target.value))) {
+            minPriceSetError(true);
+            minPriceSetHelperText('Min price input must be a number');
+        }else{
+            minPriceSetError(false);
+            minPriceSetHelperText('');
+        }
     }
 
     const handleMaxPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setMaxPrice(event.target.value)
+         if (isNaN(Number(event.target.value))) {
+            maxPriceSetError(true);
+            maxPriceSetHelperText('Max price input must be a number');
+        }else{
+            maxPriceSetError(false);
+            maxPriceSetHelperText('');
+        }
     }
 
     const handleMultiSelectChange = (
@@ -237,6 +255,10 @@ export default function Inventory() {
                 Inventory
             </Typography>
             <Filters
+                minPriceHelperText={minPriceHelperText}
+                minPriceError={minPriceError}
+                maxPriceError={maxPriceError}
+                maxPriceHelperText={maxPriceHelperText}
                 handleMaxPriceChange={handleMaxPriceChange}
                 handleMinPriceChange={handleMinPriceChange}
                 handleModelChange={handleModelChange}
