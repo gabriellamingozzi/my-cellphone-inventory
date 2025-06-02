@@ -19,7 +19,7 @@ const colors = [
     'Bay',
     'Porcelain',
     'Rose'
-];
+].sort();
 
 const storage = [
     '64 GB',
