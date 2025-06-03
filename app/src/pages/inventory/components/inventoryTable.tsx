@@ -7,9 +7,12 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box'
 import type Cellphone from '~/src/types/cellphone';
 import { useSortableTable } from "../../../hooks/useSortableTable";
 import { styled } from '@mui/material/styles';
+import { Typography } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 
 interface Props {
   inventoryArray: Cellphone[]
@@ -31,54 +34,68 @@ export default function InventoryTable(props: Props) {
 
 
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover, // A very light grey from MUI's palette
-    },
-    // Hide last border for all the cells
-    '&:last-child td, &:last-child th': {
-      border: 0,
-    },
     '&:hover': {
-      backgroundColor: theme.palette.action.selected, // A slightly darker hover color
-      cursor: 'pointer', // Indicates interactivity
+      backgroundColor: '#E0F2F7',
+      cursor: 'pointer', 
     },
   }));
 
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            {columnHeaders.map((field) => (
-              <TableCell key={field}>
-                <TableSortLabel
-                  active={sortField === field}
-                  direction={sortField === field ? sortOrder : "asc"}
-                  onClick={() => handleSort(field)}
-                >
-                  {field.toUpperCase()}
-                </TableSortLabel>
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {tableData.map((cellphone: Cellphone, index: number) => (
+    <>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow sx={{backgroundColor: 'rgba(0, 0, 0, 0.1)'}}>
+              {columnHeaders.map((field) => (
+                <TableCell key={field}>
+                  <TableSortLabel
+                    active={sortField === field}
+                    direction={sortField === field ? sortOrder : "asc"}
+                    onClick={() => handleSort(field)}
+                  >
+                    {field.toUpperCase()}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {tableData.length > 0 && tableData.map((cellphone: Cellphone, index: number) => (
 
-            <StyledTableRow
-              key={index}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell >{cellphone.brand}</TableCell>
-              <TableCell>{cellphone.model}</TableCell>
-              <TableCell>{cellphone.storage}</TableCell>
-              <TableCell>{cellphone.color}</TableCell>
-              <TableCell>{cellphone.price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</TableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+              <StyledTableRow
+                key={index}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell >{cellphone.brand}</TableCell>
+                <TableCell>{cellphone.model}</TableCell>
+                <TableCell>{cellphone.storage}</TableCell>
+                <TableCell>{cellphone.color}</TableCell>
+                <TableCell>{cellphone.price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</TableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      {tableData.length === 0 &&
+
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center', 
+            marginTop: 3,
+          }}
+        >
+          <SearchIcon sx={{ fontSize: 80,  color: '#121212' }} />
+          <Typography variant="h6" component="p" sx={{ mt: 2 }}>
+            No Matching Search Results
+          </Typography>
+        </Box>
+      }
+    </>
   );
 }

@@ -36,7 +36,7 @@ const storage = [
     '1 TB',
 ];
 
-const darkDrawerTheme = createTheme({
+const darkFiltersTheme = createTheme({
     palette: {
         mode: 'dark',
     },
@@ -65,7 +65,7 @@ export default function Filters(props: Props) {
     return (
 
         <>
-            <ThemeProvider theme={darkDrawerTheme}>
+            <ThemeProvider theme={darkFiltersTheme}>
                 <Accordion defaultExpanded sx={{
                     borderTopLeftRadius: borderRadius,
                     borderTopRightRadius: borderRadius,

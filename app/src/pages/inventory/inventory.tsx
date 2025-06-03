@@ -1,10 +1,11 @@
 import React, { useState, useEffect, use } from 'react';
 
-import Typography from '@mui/material/Typography';
+import { Typography } from '@mui/material';
 import Filters from './components/filters'
 import InventoryTable from './components/inventoryTable'
 import type Cellphone from '~/src/types/cellphone';
 import type { SelectChangeEvent } from '@mui/material';
+import SmartphoneIcon from '@mui/icons-material/Smartphone';
 
 import { useDebounceValue } from 'usehooks-ts'
 
@@ -171,7 +172,7 @@ export default function Inventory() {
         if (isNaN(Number(event.target.value))) {
             minPriceSetError(true);
             minPriceSetHelperText('Min price input must be a number');
-        }else{
+        } else {
             minPriceSetError(false);
             minPriceSetHelperText('');
         }
@@ -179,10 +180,10 @@ export default function Inventory() {
 
     const handleMaxPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setMaxPrice(event.target.value)
-         if (isNaN(Number(event.target.value))) {
+        if (isNaN(Number(event.target.value))) {
             maxPriceSetError(true);
             maxPriceSetHelperText('Max price input must be a number');
-        }else{
+        } else {
             maxPriceSetError(false);
             maxPriceSetHelperText('');
         }
@@ -251,8 +252,10 @@ export default function Inventory() {
     return (
 
         <>
+
             <Typography variant="h1" gutterBottom>
-                Inventory
+                Inventory{' '} 
+                <SmartphoneIcon sx={{fontSize: 70,verticalAlign: 'middle', color: '#121212' }} />
             </Typography>
             <Filters
                 minPriceHelperText={minPriceHelperText}
