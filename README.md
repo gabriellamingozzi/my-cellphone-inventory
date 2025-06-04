@@ -12,6 +12,11 @@ npm install @mui/icons-material @mui/material @emotion/styled @emotion/react
 npm install usehooks-ts
 ```
 
+Note: you must run build after you clone and install
+```bash
+npm run build
+```
+
 ### Development
 
 Start the development server with HMR:
